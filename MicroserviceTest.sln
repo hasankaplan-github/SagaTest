@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceTest.MessagingContracts", "MicroserviceTest.MessagingContracts\MicroserviceTest.MessagingContracts.csproj", "{6B538771-A61F-4F65-AE67-CC1B317F60F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceTest.SagaStateMachine", "MicroserviceTest.SagaStateMachine\MicroserviceTest.SagaStateMachine.csproj", "{BD3CB217-A368-441A-BB98-8895EE9D7EF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceTest.Command1Consumer", "MicroserviceTest.Command1Consumer\MicroserviceTest.Command1Consumer.csproj", "{F0B901CA-61E1-4A1C-AF37-8EF784EEE229}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceTest.Command2Consumer", "MicroserviceTest.Command2Consumer\MicroserviceTest.Command2Consumer.csproj", "{66E7D05B-B360-4B28-8ABA-BB2508DAC9F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceTest.InitializerApp", "MicroserviceTest.InitializerApp\MicroserviceTest.InitializerApp.csproj", "{1A7007C4-CF24-4475-81BD-5FA3BAE255B5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B538771-A61F-4F65-AE67-CC1B317F60F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B538771-A61F-4F65-AE67-CC1B317F60F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B538771-A61F-4F65-AE67-CC1B317F60F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B538771-A61F-4F65-AE67-CC1B317F60F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD3CB217-A368-441A-BB98-8895EE9D7EF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD3CB217-A368-441A-BB98-8895EE9D7EF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD3CB217-A368-441A-BB98-8895EE9D7EF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD3CB217-A368-441A-BB98-8895EE9D7EF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0B901CA-61E1-4A1C-AF37-8EF784EEE229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0B901CA-61E1-4A1C-AF37-8EF784EEE229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0B901CA-61E1-4A1C-AF37-8EF784EEE229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0B901CA-61E1-4A1C-AF37-8EF784EEE229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66E7D05B-B360-4B28-8ABA-BB2508DAC9F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66E7D05B-B360-4B28-8ABA-BB2508DAC9F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66E7D05B-B360-4B28-8ABA-BB2508DAC9F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66E7D05B-B360-4B28-8ABA-BB2508DAC9F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A7007C4-CF24-4475-81BD-5FA3BAE255B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A7007C4-CF24-4475-81BD-5FA3BAE255B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A7007C4-CF24-4475-81BD-5FA3BAE255B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A7007C4-CF24-4475-81BD-5FA3BAE255B5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A2E2E5E-DA08-4A17-86D1-CA350AD9E7BF}
+	EndGlobalSection
+EndGlobal
