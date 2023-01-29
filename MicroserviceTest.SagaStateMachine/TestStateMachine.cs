@@ -18,15 +18,15 @@ public class TestStateMachine : MassTransitStateMachine<TestSagaStateMachineInst
 	{
 		InstanceState(x => x.CurrentState);
 
-        //Event(() => EventOccured1, configurator =>
-        //    configurator
-        //        //.CorrelateById(c => c.Message.CorrelationId)
-        //        .SelectId(x => x.CorrelationId ?? NewId.NextGuid()));
+        Event(() => EventOccured1, configurator =>
+            configurator
+                //.CorrelateById(c => c.Message.CorrelationId)
+                .SelectId(x => x.CorrelationId ?? NewId.NextGuid()));
 
         Initially(
             When(EventOccured1)
             .TransitionTo(FirstState)
-            .Then(c => Console.WriteLine($"Event1 received. CorrelationId:{c.Message.CorrelationId}, Now state is " + c.Instance.CurrentState))
+            .Then(c => Console.WriteLine($"Event1 received. CorrelationId:{c.CorrelationId}, Now state is " + c.Instance.CurrentState))
             .ThenAsync(async c =>
             {
                 var rabbitMqHost = ConfigurationManager.AppSettings["rabbitMqHost"]!;

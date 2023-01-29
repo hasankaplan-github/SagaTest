@@ -48,8 +48,9 @@ Console.ReadLine();
 while (continueRunning)
 {
     //var order = OrderGenerator.Currrent.Generate();
-    var event1 = new { CorrelationId = Guid.NewGuid() };
+    //var event1 = new { CorrelationId = Guid.NewGuid() };
+    var event1 = new { };
     bus.Publish<IEvent1>(event1);
-    Console.WriteLine("Event1 published. Correlation Id: " + event1.CorrelationId);
+    Console.WriteLine("Event1 published.");
     Console.ReadLine();
 }
