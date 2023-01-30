@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 
 namespace MicroserviceTest.MessagingContracts.Events;
 
-public interface IEvent2 : CorrelatedBy<Guid>
+public interface IEvent2 : CorrelatedBy<Guid>, IBaseEvent
 {
 }

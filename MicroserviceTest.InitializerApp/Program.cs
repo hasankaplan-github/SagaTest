@@ -49,7 +49,11 @@ while (continueRunning)
 {
     //var order = OrderGenerator.Currrent.Generate();
     //var event1 = new { CorrelationId = Guid.NewGuid() };
-    var event1 = new { };
+    var event1 = new 
+    { 
+        PublisherUserId = "User1",
+        OwnerUserId = "User1"
+    };
     bus.Publish<IEvent1>(event1);
     Console.WriteLine("Event1 published.");
     Console.ReadLine();

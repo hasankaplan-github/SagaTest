@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace MicroserviceTest.MessagingContracts.Events;
 
-public interface IEvent1 : CorrelatedBy<Guid>
+public interface IEvent1 : CorrelatedBy<Guid>, IBaseEvent
 {
+    string OwnerUserId { get; set; }
 }

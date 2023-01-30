@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using MassTransit.Configuration;
 using MassTransit.RabbitMqTransport;
 using MassTransit.Saga;
 using MassTransit.Util;
@@ -51,6 +52,7 @@ public class SagaConfiguratorService
 
     private void ConfigureSagaEndpoint(IRabbitMqReceiveEndpointConfigurator endPointConfigurator)
     {
+        
         var testStateMachine = new TestStateMachine();
         //var repository = this.CreateRepository();
       //  endPointConfigurator.PrefetchCount = MAX_NUMBER_OF_PROCESSING_MESSAGES;

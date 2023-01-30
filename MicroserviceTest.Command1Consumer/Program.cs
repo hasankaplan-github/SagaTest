@@ -22,6 +22,7 @@ var bus = Bus.Factory.CreateUsingRabbitMq(configurator =>
 
     configurator.ReceiveEndpoint(queueName, c =>
     {
+        c.UseMessageRetry(x => x.Immediate(3));
         c.Consumer<Command1Consumer>();
     });
 });
