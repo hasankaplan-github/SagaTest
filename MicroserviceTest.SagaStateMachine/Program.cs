@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using MicroserviceTest.SagaStateMachine;
+using System;
 
 Console.Title = "Saga State Machine";
 Console.WriteLine("Hello, World!");
@@ -10,5 +11,14 @@ Console.WriteLine("Starting State Machine...");
 var service = new SagaConfiguratorService();
 service.Start();
 Console.WriteLine("Press any key to close...");
-Console.ReadKey();
+while (true)
+{
+    var consoleKeyInfo = Console.ReadKey();
+	if (consoleKeyInfo.KeyChar != 'g')
+	{
+		break;
+	}
+
+    service.GenerateStateMachineGraph();
+}
 service.Stop();

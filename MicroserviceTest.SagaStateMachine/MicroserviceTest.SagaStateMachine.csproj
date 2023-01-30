@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="MassTransit" Version="8.0.12" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.12" />
+    <PackageReference Include="MassTransit.StateMachineVisualizer" Version="8.0.12" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
   </ItemGroup>
 

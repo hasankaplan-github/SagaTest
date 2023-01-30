@@ -2,7 +2,9 @@
 using MassTransit.Configuration;
 using MassTransit.RabbitMqTransport;
 using MassTransit.Saga;
+using MassTransit.SagaStateMachine;
 using MassTransit.Util;
+using MassTransit.Visualizer;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,6 +18,7 @@ public class SagaConfiguratorService
     private const int MAX_NUMBER_OF_PROCESSING_MESSAGES = 8;
     private IBusControl _busControl;
     private BusHandle _busHandle;
+    private TestStateMachine _testStateMachine;
 
     public SagaConfiguratorService()
     {
@@ -54,10 +57,10 @@ public class SagaConfiguratorService
     private void ConfigureSagaEndpoint(IRabbitMqReceiveEndpointConfigurator endPointConfigurator)
     {
         
-        var testStateMachine = new TestStateMachine();
+        _testStateMachine = new TestStateMachine();
         //var repository = this.CreateRepository();
       //  endPointConfigurator.PrefetchCount = MAX_NUMBER_OF_PROCESSING_MESSAGES;
-        endPointConfigurator.StateMachineSaga(testStateMachine, new InMemorySagaRepository<TestSagaStateMachineInstance>());        
+        endPointConfigurator.StateMachineSaga(_testStateMachine, new InMemorySagaRepository<TestSagaStateMachineInstance>());        
     }
 
     //private ISagaRepository<ProcessingOrderState> CreateRepository()
@@ -75,4 +78,16 @@ public class SagaConfiguratorService
 
     private void TryToStopBus() =>
         _busHandle?.Stop();
+
+    public void GenerateStateMachineGraph()
+    {
+        var fileNameWithoutExtension = "StateMachine";
+        var fullFileNameWithoutExtension = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + fileNameWithoutExtension;
+
+        StateMachineGraphvizGenerator generator = new(_testStateMachine.GetGraph());
+        string dotFileContent = generator.CreateDotFile();
+        File.WriteAllText(fullFileNameWithoutExtension + ".dot", dotFileContent);
+        var cmdText = $"/C dot -Tsvg {fullFileNameWithoutExtension}.dot -o {fullFileNameWithoutExtension}.svg";
+        System.Diagnostics.Process.Start("CMD.exe", cmdText);
+    }
 }
