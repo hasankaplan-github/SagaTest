@@ -15,9 +15,13 @@ namespace MicroserviceTest.SagaStateMachine;
 
 public class TestStateMachine : MassTransitStateMachine<TestSagaStateMachineInstance>
 {
-	public TestStateMachine()
+    private readonly string _rabbitMqHost = ConfigurationManager.AppSettings["rabbitMqHost"]!;
+    private readonly string _rabbitMqCommand1Queue = ConfigurationManager.AppSettings["rabbitMqCommand1Queue"]!;
+    private readonly string _rabbitMqCommand2Queue = ConfigurationManager.AppSettings["rabbitMqCommand2Queue"]!;
+
+    public TestStateMachine()
 	{
-		InstanceState(x => x.CurrentState);
+        InstanceState(x => x.CurrentState);
 
         Event(() => EventOccured1, configurator =>
             configurator
@@ -26,14 +30,17 @@ public class TestStateMachine : MassTransitStateMachine<TestSagaStateMachineInst
 
         Initially(
             When(EventOccured1)
+            .Then(c =>
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Current state: {c.Saga.CurrentState}");
+            })
             .TransitionTo(FirstState)
             .Then(c => c.Saga.OwnerUserId = c.Message.OwnerUserId)
-            .Then(c => Console.WriteLine($"{c.Message.GetType().Name} received. PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}, Current state is " + c.Saga.CurrentState))
+            .Then(c => Console.WriteLine($"{c.Message.GetType().Name} received. PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}, Current state is {c.Saga.CurrentState}"))
             .ThenAsync(async c =>
             {
-                var rabbitMqHost = ConfigurationManager.AppSettings["rabbitMqHost"]!;
-                var queueName = ConfigurationManager.AppSettings["rabbitMqCommand1Queue"]!;
-                var sendEndpoint = await c.GetSendEndpoint(new Uri(rabbitMqHost + queueName));
+                var sendEndpoint = await c.GetSendEndpoint(new Uri(_rabbitMqHost + _rabbitMqCommand1Queue));
                 await sendEndpoint.Send<Command1>(new Command1 { CorrelationId = c.CorrelationId!.Value });
             }));
 
@@ -48,20 +55,20 @@ public class TestStateMachine : MassTransitStateMachine<TestSagaStateMachineInst
         During(FirstState,
             When(EventOccured2)
             .TransitionTo(SecondState)
-            .Then(c => Console.WriteLine($"{c.Message.GetType().Name} received. PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}, Current state is " + c.Saga.CurrentState))
+            .Then(c => Console.WriteLine($"{c.Message.GetType().Name} received. PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}, Current state is {c.Saga.CurrentState}"))
             .ThenAsync(async c =>
             {
-                var rabbitMqHost = ConfigurationManager.AppSettings["rabbitMqHost"]!;
-                var queueName = ConfigurationManager.AppSettings["rabbitMqCommand2Queue"]!;
-                var sendEndpoint = await c.GetSendEndpoint(new Uri(rabbitMqHost + queueName));
+                var sendEndpoint = await c.GetSendEndpoint(new Uri(_rabbitMqHost + _rabbitMqCommand2Queue));
                 await sendEndpoint.Send<Command2>(new Command2 { CorrelationId = c.CorrelationId!.Value });
             }));
 
         During(SecondState,
             When(EventOccured3)
             .Finalize()
-            .Then(c => Console.WriteLine($"{c.Message.GetType().Name} received. PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}, Current state is " + c.Saga.CurrentState))
-            .Then(c=>Console.WriteLine($"Saga: {c.Saga.OwnerUserId}")));
+            .Then(c => Console.WriteLine($"{c.Message.GetType().Name} received. PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}, Current state is {c.Saga.CurrentState}")));
+
+        Finally(x => x
+            .Then(c => Console.WriteLine($"StateMachine completed. CorrelationId:{c.CorrelationId}, Owner: {c.Saga.OwnerUserId}, Current state: {c.Saga.CurrentState}")));
 
         SetCompletedWhenFinalized();
 	}

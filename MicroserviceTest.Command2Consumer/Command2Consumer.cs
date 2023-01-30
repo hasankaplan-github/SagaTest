@@ -13,6 +13,7 @@ public class Command2Consumer : IConsumer<Command2>
 {
     public async Task Consume(ConsumeContext<Command2> context)
     {
+        Console.WriteLine();
         Console.WriteLine($"{context.Message.GetType().Name} consume edildi.");
         await Task.Delay(2000);
         await context.Publish<Event3>(new Event3

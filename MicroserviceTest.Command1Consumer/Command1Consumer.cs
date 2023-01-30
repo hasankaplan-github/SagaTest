@@ -13,6 +13,7 @@ public class Command1Consumer : IConsumer<Command1>
 {
     public async Task Consume(ConsumeContext<Command1> context)
     {
+        Console.WriteLine();
         Console.WriteLine($"{context.Message.GetType().Name} consume edildi.");
         //throw new NotImplementedException();
         await Task.Delay(2000);
