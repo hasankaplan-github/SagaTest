@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 
 namespace MicroserviceTest.Command2Consumer;
 
-public class Command2Consumer : IConsumer<ICommand2>
+public class Command2Consumer : IConsumer<Command2>
 {
-    public async Task Consume(ConsumeContext<ICommand2> context)
+    public async Task Consume(ConsumeContext<Command2> context)
     {
         Console.WriteLine($"{context.Message.GetType().Name} consume edildi.");
         await Task.Delay(2000);
-        await context.Publish<IEvent3>(new 
+        await context.Publish<Event3>(new Event3
         { 
             CorrelationId = context.Message.CorrelationId,
             PublisherUserId = "User3"
         });
-        Console.WriteLine($"IEvent3 publish edildi. CorrelationId: {context.Message.CorrelationId}");
+        Console.WriteLine($"Event3 publish edildi. CorrelationId: {context.Message.CorrelationId}");
     }
 }

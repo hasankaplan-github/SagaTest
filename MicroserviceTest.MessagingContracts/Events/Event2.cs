@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MassTransit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MicroserviceTest.MessagingContracts.Events;
 
-public interface IBaseEvent
+public record Event2 : BaseEvent, CorrelatedBy<Guid>
 {
-    string PublisherUserId { get; set; }
+    public Guid CorrelationId { get; set; }
 }

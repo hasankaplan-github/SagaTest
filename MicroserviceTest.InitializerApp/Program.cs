@@ -16,7 +16,7 @@ void CancelKeyPressed(object sender, ConsoleCancelEventArgs e)
 Console.CancelKeyPress += CancelKeyPressed!;
 
 
-IBus CreateBust()
+(IBus, BusHandle) CreateBust()
 {
     var rabbitMqHostUri = new Uri(ConfigurationManager.AppSettings["rabbitMqHost"]!);
     var rabbitMqUsername = ConfigurationManager.AppSettings["rabbitMqUsername"];
@@ -37,11 +37,11 @@ IBus CreateBust()
         //});
     });
 
-    TaskUtil.Await(() => bus.StartAsync());
-    return bus;
+    var busHandle = TaskUtil.Await(() => bus.StartAsync());
+    return (bus, busHandle);
 }
 
-var bus = CreateBust();
+var (bus, busHandle) = CreateBust();
 Console.WriteLine("Starting...");
 Console.WriteLine("Enter to send...");
 Console.ReadLine();
@@ -49,12 +49,14 @@ while (continueRunning)
 {
     //var order = OrderGenerator.Currrent.Generate();
     //var event1 = new { CorrelationId = Guid.NewGuid() };
-    var event1 = new 
+    var event1 = new Event1
     { 
         PublisherUserId = "User1",
-        OwnerUserId = "User1"
+        OwnerUserId = "OwnerUser"
     };
-    bus.Publish<IEvent1>(event1);
+    bus.Publish<Event1>(event1);
     Console.WriteLine("Event1 published.");
     Console.ReadLine();
 }
+
+busHandle?.StopAsync();

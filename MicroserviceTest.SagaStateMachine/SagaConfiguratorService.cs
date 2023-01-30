@@ -14,8 +14,9 @@ namespace MicroserviceTest.SagaStateMachine;
 public class SagaConfiguratorService
 {
     private const int MAX_NUMBER_OF_PROCESSING_MESSAGES = 8;
-    private IBusControl busControl;
-    private BusHandle busHandler;
+    private IBusControl _busControl;
+    private BusHandle _busHandle;
+
     public SagaConfiguratorService()
     {
 
@@ -24,13 +25,13 @@ public class SagaConfiguratorService
     public void Start()
     {
         Console.WriteLine("Starting bus...");
-        (this.busControl, this.busHandler) = this.CreateBus();
+        (_busControl, _busHandle) = CreateBus();
     }
   
 
     private (IBusControl, BusHandle) CreateBus()
     { 
-        var bus = Bus.Factory.CreateUsingRabbitMq(this.ConfigureBus);
+        var bus = Bus.Factory.CreateUsingRabbitMq(ConfigureBus);
         var busHandle = TaskUtil.Await(() => bus.StartAsync());
         return (bus, busHandle);
     }
@@ -39,8 +40,8 @@ public class SagaConfiguratorService
     {
         var rabbitMqHostUri = new Uri(ConfigurationManager.AppSettings["rabbitMqHost"]!);
         //var inputQueue = ConfigurationManager.AppSettings["rabbitInputQueue"];
-        factoryConfigurator.Host(rabbitMqHostUri, this.ConfigureCredentials);
-        factoryConfigurator.ReceiveEndpoint(this.ConfigureSagaEndpoint);
+        factoryConfigurator.Host(rabbitMqHostUri, ConfigureCredentials);
+        factoryConfigurator.ReceiveEndpoint(ConfigureSagaEndpoint);
     }
     private void ConfigureCredentials(IRabbitMqHostConfigurator hostConfiurator)
     {
@@ -69,9 +70,9 @@ public class SagaConfiguratorService
     public void Stop()
     {
         Console.WriteLine("Stopping bus");
-        this.TryToStopBus(); 
+        TryToStopBus(); 
     }        
 
     private void TryToStopBus() =>
-        this.busHandler?.Stop();
+        _busHandle?.Stop();
 }

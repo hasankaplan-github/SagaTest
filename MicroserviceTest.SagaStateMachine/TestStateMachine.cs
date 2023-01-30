@@ -34,7 +34,7 @@ public class TestStateMachine : MassTransitStateMachine<TestSagaStateMachineInst
                 var rabbitMqHost = ConfigurationManager.AppSettings["rabbitMqHost"]!;
                 var queueName = ConfigurationManager.AppSettings["rabbitMqCommand1Queue"]!;
                 var sendEndpoint = await c.GetSendEndpoint(new Uri(rabbitMqHost + queueName));
-                await sendEndpoint.Send<ICommand1>(new { CorrelationId = c.CorrelationId });
+                await sendEndpoint.Send<Command1>(new Command1 { CorrelationId = c.CorrelationId!.Value });
             }));
 
         During(FirstState,
@@ -54,7 +54,7 @@ public class TestStateMachine : MassTransitStateMachine<TestSagaStateMachineInst
                 var rabbitMqHost = ConfigurationManager.AppSettings["rabbitMqHost"]!;
                 var queueName = ConfigurationManager.AppSettings["rabbitMqCommand2Queue"]!;
                 var sendEndpoint = await c.GetSendEndpoint(new Uri(rabbitMqHost + queueName));
-                await sendEndpoint.Send<ICommand2>(new { CorrelationId = c.CorrelationId });
+                await sendEndpoint.Send<Command2>(new Command2 { CorrelationId = c.CorrelationId!.Value });
             }));
 
         During(SecondState,
@@ -76,16 +76,16 @@ public class TestStateMachine : MassTransitStateMachine<TestSagaStateMachineInst
 
     #region Events
 
-    public Event<IEvent1> EventOccured1 { get; private set; }
-    public Event<IEvent2> EventOccured2 { get; private set; }
-    public Event<IEvent3> EventOccured3 { get; private set; }
+    public Event<Event1> EventOccured1 { get; private set; }
+    public Event<Event2> EventOccured2 { get; private set; }
+    public Event<Event3> EventOccured3 { get; private set; }
 
     #endregion
 
 
     #region FaultEvents
 
-    public Event<Fault<ICommand1>> Command1Faulted { get; private set; }
+    public Event<Fault<Command1>> Command1Faulted { get; private set; }
 
     #endregion
 }

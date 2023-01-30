@@ -26,7 +26,9 @@ var bus = Bus.Factory.CreateUsingRabbitMq(configurator =>
         c.Consumer<Command1Consumer>();
     });
 });
-TaskUtil.Await<BusHandle>(() => bus.StartAsync());
+var busHandle = TaskUtil.Await<BusHandle>(() => bus.StartAsync());
 
 Console.WriteLine("Press any key to close...");
 Console.ReadKey();
+
+busHandle?.StopAsync();

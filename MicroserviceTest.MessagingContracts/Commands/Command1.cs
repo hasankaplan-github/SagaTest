@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace MicroserviceTest.MessagingContracts.Commands;
 
-public interface ICommand1 : CorrelatedBy<Guid>
+public record Command1 : CorrelatedBy<Guid>
 {
+    public Guid CorrelationId { get; set; }
 }
