@@ -16,7 +16,7 @@ public class Command2Consumer : IConsumer<Command2>
         Console.WriteLine();
         Console.WriteLine($"{context.Message.GetType().Name} consume edildi.");
         await Task.Delay(2000);
-        await context.Publish<Event3>(new Event3
+        await context.Publish<Something3Occured>(new Something3Occured
         { 
             CorrelationId = context.Message.CorrelationId,
             PublisherUserId = "User3"

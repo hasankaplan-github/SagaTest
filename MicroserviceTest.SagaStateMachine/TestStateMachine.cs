@@ -1,15 +1,7 @@
 ﻿using MassTransit;
-using MassTransit.Internals;
-using MassTransit.RabbitMqTransport;
 using MicroserviceTest.MessagingContracts.Commands;
 using MicroserviceTest.MessagingContracts.Events;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static MassTransit.Monitoring.Performance.BuiltInCounters;
 
 namespace MicroserviceTest.SagaStateMachine;
 
@@ -23,21 +15,22 @@ public class TestStateMachine : MassTransitStateMachine<TestSagaStateMachineInst
 	{
         InstanceState(x => x.CurrentState);
 
-        Event(() => EventOccured1, configurator =>
+        Event(() => Something1Occured, configurator =>
             configurator
                 //.CorrelateById(c => c.Message.CorrelationId)
                 .SelectId(x => x.CorrelationId ?? NewId.NextGuid()));
 
         Initially(
-            When(EventOccured1)
+            When(Something1Occured)
             .Then(c =>
             {
                 Console.WriteLine();
                 Console.WriteLine($"Current state: {c.Saga.CurrentState}");
             })
+            .Then(c => c.Saga.FromState = c.Saga.CurrentState)
             .TransitionTo(FirstState)
             .Then(c => c.Saga.OwnerUserId = c.Message.OwnerUserId)
-            .Then(c => Console.WriteLine($"{c.Message.GetType().Name} received. PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}, Current state is {c.Saga.CurrentState}"))
+            .Then(c => Console.WriteLine($"{c.Saga.FromState}--{c.Event.Name}-->{c.Saga.CurrentState} ... PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}"))
             .SendAsync(new Uri(_rabbitMqHost + _rabbitMqCommand1Queue), async c => new Command1 { CorrelationId = c.CorrelationId!.Value })
             //.ThenAsync(async c =>
             //{
@@ -48,16 +41,18 @@ public class TestStateMachine : MassTransitStateMachine<TestSagaStateMachineInst
 
         During(FirstState,
             When(Command1Faulted)
+            .Then(c => c.Saga.FromState = c.Saga.CurrentState)
             .Finalize()
             .Then(c =>
             {
-                Console.WriteLine($"{c.Message.Host.ProcessName} Faulted. Current state: {c.Saga.CurrentState}");
+                Console.WriteLine($"{c.Message.Host.ProcessName} Faulted. {c.Saga.FromState}--{c.Event.Name}-->{c.Saga.CurrentState}");
             }));
 
         During(FirstState,
-            When(EventOccured2)
+            When(Something2Occured)
+            .Then(c => c.Saga.FromState = c.Saga.CurrentState)
             .TransitionTo(SecondState)
-            .Then(c => Console.WriteLine($"{c.Message.GetType().Name} received. PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}, Current state is {c.Saga.CurrentState}"))
+            .Then(c => Console.WriteLine($"{c.Saga.FromState}--{c.Event.Name}-->{c.Saga.CurrentState} ... PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}"))
             .SendAsync(new Uri(_rabbitMqHost + _rabbitMqCommand2Queue), async c => new Command2 { CorrelationId = c.CorrelationId!.Value })
             //.ThenAsync(async c =>
             //{
@@ -67,12 +62,13 @@ public class TestStateMachine : MassTransitStateMachine<TestSagaStateMachineInst
             );
 
         During(SecondState,
-            When(EventOccured3)
+            When(Something3Occured)
+            .Then(c => c.Saga.FromState = c.Saga.CurrentState)
             .Finalize()
-            .Then(c => Console.WriteLine($"{c.Message.GetType().Name} received. PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}, Current state is {c.Saga.CurrentState}")));
+            .Then(c => Console.WriteLine($"{c.Saga.FromState}--{c.Event.Name}-->{c.Saga.CurrentState} ... PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}")));
 
         Finally(x => x
-            .Then(c => Console.WriteLine($"StateMachine completed. CorrelationId:{c.CorrelationId}, Owner: {c.Saga.OwnerUserId}, Current state: {c.Saga.CurrentState}")));
+            .Then(c => Console.WriteLine($"StateMachine completed. CorrelationId:{c.CorrelationId}, RequestSagaOwner: {c.Saga.OwnerUserId}")));
 
         SetCompletedWhenFinalized();
 	}
@@ -87,9 +83,9 @@ public class TestStateMachine : MassTransitStateMachine<TestSagaStateMachineInst
 
     #region Events
 
-    public Event<Event1> EventOccured1 { get; private set; }
-    public Event<Event2> EventOccured2 { get; private set; }
-    public Event<Event3> EventOccured3 { get; private set; }
+    public Event<Something1Occured> Something1Occured { get; private set; }
+    public Event<Something2Occured> Something2Occured { get; private set; }
+    public Event<Something3Occured> Something3Occured { get; private set; }
 
     #endregion
 

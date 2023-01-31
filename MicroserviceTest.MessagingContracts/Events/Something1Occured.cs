@@ -2,7 +2,7 @@
 
 namespace MicroserviceTest.MessagingContracts.Events;
 
-public record Event1 : BaseEvent, CorrelatedBy<Guid>
+public record Something1Occured : BaseEvent, CorrelatedBy<Guid>
 {
     public string OwnerUserId { get; set; }
 

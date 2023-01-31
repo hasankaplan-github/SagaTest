@@ -19,4 +19,5 @@ public class TestSagaStateMachineInstance : SagaStateMachineInstance
 
 
     public string OwnerUserId { get; set; }
+    public string FromState { get; set; }
 }

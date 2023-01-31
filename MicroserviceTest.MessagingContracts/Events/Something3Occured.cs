@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MicroserviceTest.MessagingContracts.Events;
 
-public record Event3 : BaseEvent, CorrelatedBy<Guid>
+public record Something3Occured : BaseEvent, CorrelatedBy<Guid>
 {
     public Guid CorrelationId { get; set; }
 }
