@@ -38,11 +38,13 @@ public class TestStateMachine : MassTransitStateMachine<TestSagaStateMachineInst
             .TransitionTo(FirstState)
             .Then(c => c.Saga.OwnerUserId = c.Message.OwnerUserId)
             .Then(c => Console.WriteLine($"{c.Message.GetType().Name} received. PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}, Current state is {c.Saga.CurrentState}"))
-            .ThenAsync(async c =>
-            {
-                var sendEndpoint = await c.GetSendEndpoint(new Uri(_rabbitMqHost + _rabbitMqCommand1Queue));
-                await sendEndpoint.Send<Command1>(new Command1 { CorrelationId = c.CorrelationId!.Value });
-            }));
+            .Send(new Uri(_rabbitMqHost + _rabbitMqCommand1Queue), c => new Command1 { CorrelationId = c.CorrelationId!.Value })
+            //.ThenAsync(async c =>
+            //{
+            //    var sendEndpoint = await c.GetSendEndpoint(new Uri(_rabbitMqHost + _rabbitMqCommand1Queue));
+            //    await sendEndpoint.Send<Command1>(new Command1 { CorrelationId = c.CorrelationId!.Value });
+            //})
+            );
 
         During(FirstState,
             When(Command1Faulted)
@@ -56,11 +58,13 @@ public class TestStateMachine : MassTransitStateMachine<TestSagaStateMachineInst
             When(EventOccured2)
             .TransitionTo(SecondState)
             .Then(c => Console.WriteLine($"{c.Message.GetType().Name} received. PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}, Current state is {c.Saga.CurrentState}"))
-            .ThenAsync(async c =>
-            {
-                var sendEndpoint = await c.GetSendEndpoint(new Uri(_rabbitMqHost + _rabbitMqCommand2Queue));
-                await sendEndpoint.Send<Command2>(new Command2 { CorrelationId = c.CorrelationId!.Value });
-            }));
+            .Send(new Uri(_rabbitMqHost + _rabbitMqCommand2Queue), c => new Command2 { CorrelationId = c.CorrelationId!.Value })
+            //.ThenAsync(async c =>
+            //{
+            //    var sendEndpoint = await c.GetSendEndpoint(new Uri(_rabbitMqHost + _rabbitMqCommand2Queue));
+            //    await sendEndpoint.Send<Command2>(new Command2 { CorrelationId = c.CorrelationId!.Value });
+            //})
+            );
 
         During(SecondState,
             When(EventOccured3)

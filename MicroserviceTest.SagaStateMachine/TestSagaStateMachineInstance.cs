@@ -13,5 +13,10 @@ public class TestSagaStateMachineInstance : SagaStateMachineInstance
 
     public string CurrentState { get; set; }
 
+    public byte[] RowVersion { get; set; }
+
+
+
+
     public string OwnerUserId { get; set; }
 }
