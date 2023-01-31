@@ -60,7 +60,7 @@ public class SagaConfiguratorService
         _testStateMachine = new TestStateMachine();
         //var repository = this.CreateRepository();
       //  endPointConfigurator.PrefetchCount = MAX_NUMBER_OF_PROCESSING_MESSAGES;
-        endPointConfigurator.StateMachineSaga(_testStateMachine, new InMemorySagaRepository<TestSagaStateMachineInstance>());
+        endPointConfigurator.StateMachineSaga(_testStateMachine, new InMemorySagaRepository<TestRequestSaga>());
         endPointConfigurator.UseInMemoryOutbox();
     }
 

@@ -5,7 +5,7 @@ using System.Configuration;
 
 namespace MicroserviceTest.SagaStateMachine;
 
-public class TestStateMachine : MassTransitStateMachine<TestSagaStateMachineInstance>
+public class TestStateMachine : MassTransitStateMachine<TestRequestSaga>
 {
     private readonly string _rabbitMqHost = ConfigurationManager.AppSettings["rabbitMqHost"]!;
     private readonly string _rabbitMqCommand1Queue = ConfigurationManager.AppSettings["rabbitMqCommand1Queue"]!;

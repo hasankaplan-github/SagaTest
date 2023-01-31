@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MicroserviceTest.SagaStateMachine;
 
-public class TestSagaStateMachineInstance : SagaStateMachineInstance
+public class TestRequestSaga : SagaStateMachineInstance
 {
     public Guid CorrelationId { get; set; }
 
