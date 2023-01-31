@@ -26,12 +26,16 @@ public class TestStateMachine : MassTransitStateMachine<TestRequestSaga>
             {
                 Console.WriteLine();
                 Console.WriteLine($"Current state: {c.Saga.CurrentState}");
+                //throw new Exception();
             })
             .Then(c => c.Saga.FromState = c.Saga.CurrentState)
             .TransitionTo(FirstState)
             .Then(c => c.Saga.OwnerUserId = c.Message.OwnerUserId)
             .Then(c => Console.WriteLine($"{c.Saga.FromState}--{c.Event.Name}-->{c.Saga.CurrentState} ... PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}"))
             .SendAsync(new Uri(_rabbitMqHost + _rabbitMqCommand1Queue), async c => new Command1 { CorrelationId = c.CorrelationId!.Value })
+            .Catch<Exception>(x => x
+                .Then(a => Console.WriteLine("hata"))
+                .Finalize())
             //.ThenAsync(async c =>
             //{
             //    var sendEndpoint = await c.GetSendEndpoint(new Uri(_rabbitMqHost + _rabbitMqCommand1Queue));
