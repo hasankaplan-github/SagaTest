@@ -20,5 +20,6 @@ while (true)
 	}
 
     service.GenerateStateMachineGraph();
+	Console.WriteLine("Graph oluşturuldu.");
 }
 service.Stop();
