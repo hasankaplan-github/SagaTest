@@ -2,7 +2,7 @@
 using MassTransit.Util;
 using MassTransit;
 using System.Configuration;
-using MicroserviceTest.MessagingContracts.Events;
+using MicroserviceTest.Messages.Events;
 
 Console.Title = "Initializer";
 Console.WriteLine("Hello, World!");

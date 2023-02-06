@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MicroserviceTest.MessagingContracts.Events;
+namespace MicroserviceTest.Messages.Events;
 
 public record BaseEvent
 {

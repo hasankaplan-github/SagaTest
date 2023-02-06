@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MicroserviceTest.MessagingContracts.Commands;
+namespace MicroserviceTest.Messages.Commands;
 
 public record Command2 : CorrelatedBy<Guid>
 {

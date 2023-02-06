@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 
-namespace MicroserviceTest.MessagingContracts.Events;
+namespace MicroserviceTest.Messages.Events;
 
 public record Something1Occured : BaseEvent, CorrelatedBy<Guid>
 {

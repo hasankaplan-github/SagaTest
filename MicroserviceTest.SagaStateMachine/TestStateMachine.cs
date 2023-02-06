@@ -1,6 +1,6 @@
 ﻿using MassTransit;
-using MicroserviceTest.MessagingContracts.Commands;
-using MicroserviceTest.MessagingContracts.Events;
+using MicroserviceTest.Messages.Commands;
+using MicroserviceTest.Messages.Events;
 using System.Configuration;
 
 namespace MicroserviceTest.SagaStateMachine;

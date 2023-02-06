@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MicroserviceTest.MessagingContracts.Events;
+namespace MicroserviceTest.Messages.Commands;
 
-public record Something3Occured : BaseEvent, CorrelatedBy<Guid>
+public record Command1 : CorrelatedBy<Guid>
 {
     public Guid CorrelationId { get; set; }
 }
