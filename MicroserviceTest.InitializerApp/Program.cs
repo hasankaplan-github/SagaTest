@@ -55,7 +55,7 @@ while (continueRunning)
         OwnerUserId = "OwnerUser"
     };
     bus.Publish<Something1Occured>(event1);
-    Console.WriteLine("Event1 published.");
+    Console.WriteLine("Something1Occured published.");
     Console.ReadLine();
 }
 
