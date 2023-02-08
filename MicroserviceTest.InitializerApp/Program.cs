@@ -41,8 +41,8 @@ Console.CancelKeyPress += CancelKeyPressed!;
     return (bus, busHandle);
 }
 
-var (bus, busHandle) = CreateBust();
 Console.WriteLine("Starting...");
+var (bus, busHandle) = CreateBust();
 Console.WriteLine("Enter to send...");
 Console.ReadLine();
 while (continueRunning)
