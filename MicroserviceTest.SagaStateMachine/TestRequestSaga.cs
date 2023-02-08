@@ -18,6 +18,6 @@ public class TestRequestSaga : SagaStateMachineInstance
 
 
 
-    public string OwnerUserId { get; set; }
-    public string FromState { get; set; }
+    public string? OwnerUserId { get; set; }
+    public string? FromState { get; set; }
 }
