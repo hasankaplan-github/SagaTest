@@ -3,6 +3,7 @@ using System;
 using MicroserviceTest.SagaStateMachine;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MicroserviceTest.SagaStateMachine.Migrations
 {
     [DbContext(typeof(TestRequestSagaDbContext))]
-    partial class TestRequestSagaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230208085632_Current_State_Length_Changed")]
+    partial class CurrentStateLengthChanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,16 +36,13 @@ namespace MicroserviceTest.SagaStateMachine.Migrations
                         .HasColumnType("character varying(200)");
 
                     b.Property<string>("FromState")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("text");
 
                     b.Property<string>("OwnerUserId")
                         .HasColumnType("text");
 
                     b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
                         .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("bytea");
 
                     b.HasKey("CorrelationId");

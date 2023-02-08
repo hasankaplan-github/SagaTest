@@ -13,13 +13,13 @@ public class TestRequestSagaMap : SagaClassMap<TestRequestSaga>
 {
     protected override void Configure(EntityTypeBuilder<TestRequestSaga> entity, ModelBuilder model)
     {
-        //entity.HasKey(x => x.CorrelationId);
-        //entity.Property(x => x.CurrentState).HasMaxLength(64);
-        //// If using Optimistic concurrency, otherwise remove this property
-        //entity.Property(x => x.RowVersion).IsRowVersion();
+        entity.HasKey(x => x.CorrelationId);
+        entity.Property(x => x.CurrentState).HasMaxLength(200);
+        // If using Optimistic concurrency, otherwise remove this property
+        entity.Property(x => x.RowVersion).IsRowVersion();
 
 
-        //entity.Property(x => x.OwnerUserId);
-        //entity.Property(x => x.FromState).HasMaxLength(64);
+        entity.Property(x => x.OwnerUserId);
+        entity.Property(x => x.FromState).HasMaxLength(200);
     }
 }
