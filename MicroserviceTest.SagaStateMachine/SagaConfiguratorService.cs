@@ -45,7 +45,7 @@ public class SagaConfiguratorService
 
         _testStateMachine = new TestStateMachine();
 
-        var repository = CreateRepository();
+        var repository = CreateInMemoryRepository(); //CreateRepository();
 
 
         //var busControl = Bus.Factory.CreateUsingRabbitMq(ConfigureBus);
@@ -57,9 +57,9 @@ public class SagaConfiguratorService
                 c.Password(password);
             });
 
-            x.ReceiveEndpoint(sagaStateMachineQueue, e =>
+            x.ReceiveEndpoint(sagaStateMachineQueue, c =>
             {
-                e.StateMachineSaga(_testStateMachine, repository);
+                c.StateMachineSaga(_testStateMachine, repository);
             });
         });
         var busHandle = TaskUtil.Await(() => busControl.StartAsync());
@@ -96,6 +96,12 @@ public class SagaConfiguratorService
     private ISagaRepository<TestRequestSaga> CreateRepository()
     {
         var repository = EntityFrameworkSagaRepository<TestRequestSaga>.CreateOptimistic(() => new TestRequestSagaContextFactory().CreateDbContext(Array.Empty<string>()));
+        return repository;
+    }
+
+    private ISagaRepository<TestRequestSaga> CreateInMemoryRepository()
+    {
+        var repository = new InMemorySagaRepository<TestRequestSaga>();
         return repository;
     }
 

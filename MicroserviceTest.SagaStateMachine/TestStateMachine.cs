@@ -74,7 +74,7 @@ public class TestStateMachine : MassTransitStateMachine<TestRequestSaga>
         Finally(x => x
             .Then(c => Console.WriteLine($"StateMachine completed. CorrelationId:{c.CorrelationId}, RequestSagaOwner: {c.Saga.OwnerUserId}")));
 
-        //SetCompletedWhenFinalized();
+        SetCompletedWhenFinalized();
 	}
 
     #region States
