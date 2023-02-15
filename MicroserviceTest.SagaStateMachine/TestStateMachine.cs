@@ -34,7 +34,7 @@ public class TestStateMachine : MassTransitStateMachine<TestRequestSaga>
             .Then(c => Console.WriteLine($"{c.Saga.FromState}--{c.Event.Name}-->{c.Saga.CurrentState} ... PublisherUserId: {c.Message.PublisherUserId}, CorrelationId:{c.CorrelationId}"))
             .SendAsync(new Uri(_rabbitMqHost + _rabbitMqCommand1Queue), async c => new Command1 { CorrelationId = c.CorrelationId!.Value })
             .Catch<Exception>(x => x
-                .Then(a => Console.WriteLine("hata"))
+                .Then(a => Console.WriteLine("hata at state:" + a.Saga.CurrentState))
                 .Finalize())
             //.ThenAsync(async c =>
             //{
