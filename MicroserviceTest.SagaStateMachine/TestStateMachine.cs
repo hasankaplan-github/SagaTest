@@ -20,6 +20,8 @@ public class TestStateMachine : MassTransitStateMachine<TestRequestSaga>
                 //.CorrelateById(c => c.Message.CorrelationId)
                 .SelectId(x => x.CorrelationId ?? NewId.NextGuid()));
 
+
+
         Initially(
             When(Something1Occured)
             .Then(c =>

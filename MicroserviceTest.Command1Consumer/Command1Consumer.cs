@@ -22,6 +22,6 @@ public class Command1Consumer : IConsumer<Command1>
             CorrelationId = context.Message.CorrelationId,
             PublisherUserId = "User2"
         });
-        Console.WriteLine($"Something2Occured publish edildi. CorrelationId: {context.Message.CorrelationId}");
+        Console.WriteLine($"Something2Occured publish edildi. CorrelationId: {context.CorrelationId}");
     }
 }
